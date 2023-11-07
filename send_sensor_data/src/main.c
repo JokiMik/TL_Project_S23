@@ -3,7 +3,13 @@
  *
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
-
+#include <zephyr/device.h>
+#include <zephyr/devicetree.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/sys/util.h>
+#include <inttypes.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/bluetooth/bluetooth.h>
@@ -12,6 +18,47 @@
 #include <zephyr/bluetooth/conn.h>
 #include <dk_buttons_and_leds.h>
 #include "my_lbs.h"
+#include "adc.h"
+
+
+#define USER_LED1         	 	DK_LED1
+#define USER_LED2          		DK_LED2
+#define USER_LED3               DK_LED3
+#define USER_LED4               DK_LED4
+
+#define USER_BUTTON_1           DK_BTN1_MSK
+#define USER_BUTTON_2           DK_BTN2_MSK
+#define USER_BUTTON_3           DK_BTN3_MSK
+#define USER_BUTTON_4           DK_BTN4_MSK
+
+/*
+LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
+
+static void button_changed(uint32_t button_state, uint32_t has_changed)
+{
+	//printk("button_state = %d\n",button_state);
+	//printk("has_changed = %d\n",has_changed);
+	if ((has_changed & USER_BUTTON_1) && (button_state & USER_BUTTON_1)) 
+	{
+		printk("Nappi 1 alhaalla\n");
+	}
+
+	if ((has_changed & USER_BUTTON_2) && (button_state & USER_BUTTON_2)) 
+	{
+		printk("Nappi 2 alhaalla\n");
+	}		
+	
+	if ((has_changed & USER_BUTTON_3) && (button_state & USER_BUTTON_3)) 
+	{
+		printk("Nappi 3 alhaalla\n");
+	}		
+
+	if ((has_changed & USER_BUTTON_4) && (button_state & USER_BUTTON_4)) 
+	{
+		printk("Nappi 4 alhaalla\n");
+	}		
+}
+*/
 
 static struct bt_le_adv_param *adv_param = BT_LE_ADV_PARAM(
 	(BT_LE_ADV_OPT_CONNECTABLE |
@@ -55,6 +102,7 @@ static const struct bt_data sd[] = {
 };
 
 /* STEP 16 - Define a function to simulate the data */
+/*
 static void simulate_data(void)
 {
 	x_value++;
@@ -75,6 +123,7 @@ static void simulate_data(void)
 	}
 
 }
+*/
 static void app_led_cb(bool led_state)
 {
 	dk_set_led(USER_LED, led_state);
@@ -88,23 +137,62 @@ static bool app_button_cb(void)
 /* STEP 18.1 - Define the thread function  */
 void send_data_thread(void)
 {
-	while(1){
-		/* Simulate data */
-		//simulate_data();
+	int err;
+	err = dk_leds_init();
+	if (err) {
+		LOG_ERR("LEDs init failed (err %d)\n", err);
+		return;
+	}
+	/*
+	err = dk_buttons_init(button_changed);
+	if (err) {
+		printk("Cannot init buttons (err: %d)\n", err);
+		return;
+	}
+	*/
+	
+	if(initializeADC() != 0)
+	{
+	printk("ADC initialization failed!");
+	return;
+	}
+
+	while (1) 
+	{
+		struct Measurement m = readADCValue();
+		printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
+
 		/* Send notification, the function sends notifications only if a client is subscribed */
-		my_lbs_send_sensor_notify(x_value);
-		printk("Sending x value: %d\n", x_value);
+		my_lbs_send_sensor_notify(m.x);
+		printk("Sending x value: %d\n", m.x);
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));
-		my_lbs_send_sensor_notify(y_value);
-		printk("Sending y value: %d\n", y_value);
+		my_lbs_send_sensor_notify(m.y);
+		printk("Sending y value: %d\n", m.y);
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));
-		my_lbs_send_sensor_notify(z_value);
-		printk("Sending z value: %d\n", z_value);
+		my_lbs_send_sensor_notify(m.z);
+		printk("Sending z value: %d\n", m.z);
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));
 		my_lbs_send_sensor_notify(position_value);
 		printk("Sending position value: %d\n", position_value);
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));
+		
+		k_sleep(K_MSEC(1000));
+		
+		dk_set_led_on(USER_LED1);
+		dk_set_led_on(USER_LED2);
+		dk_set_led_on(USER_LED3);
+		dk_set_led_on(USER_LED4);
+		 
+		k_sleep(K_MSEC(1000));
+		
+		dk_set_led_off(USER_LED1);
+		dk_set_led_off(USER_LED2);
+		dk_set_led_off(USER_LED3);
+		dk_set_led_off(USER_LED4);
+		
+
 	}
+
 }
 static struct my_lbs_cb app_callbacks = {
 	.led_cb = app_led_cb,

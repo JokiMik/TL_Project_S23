@@ -1,5 +1,0 @@
-{
-    "nrf-connect.applications": [
-        "${workspaceFolder}\\send_sensor_data"
-    ]
-}

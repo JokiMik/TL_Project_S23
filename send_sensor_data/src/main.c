@@ -20,46 +20,6 @@
 #include "my_lbs.h"
 #include "adc.h"
 
-
-#define USER_LED1         	 	DK_LED1
-#define USER_LED2          		DK_LED2
-#define USER_LED3               DK_LED3
-#define USER_LED4               DK_LED4
-
-#define USER_BUTTON_1           DK_BTN1_MSK
-#define USER_BUTTON_2           DK_BTN2_MSK
-#define USER_BUTTON_3           DK_BTN3_MSK
-#define USER_BUTTON_4           DK_BTN4_MSK
-
-/*
-LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
-
-static void button_changed(uint32_t button_state, uint32_t has_changed)
-{
-	//printk("button_state = %d\n",button_state);
-	//printk("has_changed = %d\n",has_changed);
-	if ((has_changed & USER_BUTTON_1) && (button_state & USER_BUTTON_1)) 
-	{
-		printk("Nappi 1 alhaalla\n");
-	}
-
-	if ((has_changed & USER_BUTTON_2) && (button_state & USER_BUTTON_2)) 
-	{
-		printk("Nappi 2 alhaalla\n");
-	}		
-	
-	if ((has_changed & USER_BUTTON_3) && (button_state & USER_BUTTON_3)) 
-	{
-		printk("Nappi 3 alhaalla\n");
-	}		
-
-	if ((has_changed & USER_BUTTON_4) && (button_state & USER_BUTTON_4)) 
-	{
-		printk("Nappi 4 alhaalla\n");
-	}		
-}
-*/
-
 static struct bt_le_adv_param *adv_param = BT_LE_ADV_PARAM(
 	(BT_LE_ADV_OPT_CONNECTABLE |
 	 BT_LE_ADV_OPT_USE_IDENTITY), /* Connectable advertising and use identity address */
@@ -75,7 +35,8 @@ LOG_MODULE_REGISTER(Lesson4_Exercise2, LOG_LEVEL_INF);
 #define RUN_STATUS_LED DK_LED1
 #define CON_STATUS_LED DK_LED2
 #define USER_LED DK_LED3
-#define USER_BUTTON DK_BTN1_MSK
+#define USER_BUTTON_1           DK_BTN1_MSK
+#define USER_BUTTON_2           DK_BTN2_MSK
 
 #define STACKSIZE 1024
 #define PRIORITY 7
@@ -84,10 +45,6 @@ LOG_MODULE_REGISTER(Lesson4_Exercise2, LOG_LEVEL_INF);
 /* STEP 17 - Define the interval at which you want to send data at */
 #define NOTIFY_INTERVAL         500
 static bool app_button_state;
-/* STEP 15 - Define the data you want to stream over Bluetooth LE */
-static uint32_t x_value = 1;
-static uint32_t y_value = 2;
-static uint32_t z_value = 3;
 static uint32_t position_value = 0;
 static bool app_button_state;
 
@@ -174,22 +131,7 @@ void send_data_thread(void)
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));
 		my_lbs_send_sensor_notify(position_value);
 		printk("Sending position value: %d\n", position_value);
-		k_sleep(K_MSEC(NOTIFY_INTERVAL));
-		
-		k_sleep(K_MSEC(1000));
-		
-		dk_set_led_on(USER_LED1);
-		dk_set_led_on(USER_LED2);
-		dk_set_led_on(USER_LED3);
-		dk_set_led_on(USER_LED4);
-		 
-		k_sleep(K_MSEC(1000));
-		
-		dk_set_led_off(USER_LED1);
-		dk_set_led_off(USER_LED2);
-		dk_set_led_off(USER_LED3);
-		dk_set_led_off(USER_LED4);
-		
+		k_sleep(K_MSEC(NOTIFY_INTERVAL));		
 
 	}
 
@@ -201,12 +143,32 @@ static struct my_lbs_cb app_callbacks = {
 
 static void button_changed(uint32_t button_state, uint32_t has_changed)
 {
-	if (has_changed & USER_BUTTON) {
-		uint32_t user_button_state = button_state & USER_BUTTON;
-		/* STEP 6 - Send indication on a button press */
+	if (has_changed & USER_BUTTON_1) {
+		uint32_t user_button_state = button_state & USER_BUTTON_1;
 		my_lbs_send_button_state_indicate(user_button_state);
 		app_button_state = user_button_state ? true : false;
+		printk("Nappi 1 alhaalla\n");
 	}
+	if ((has_changed & USER_BUTTON_2) && (button_state & USER_BUTTON_2)) 
+	{
+		position_value++;
+
+		printk("Nappi 2 alhaalla\n");
+		printk("vaihdan anturin suuntaa...\n");
+		printk("0 = x-akseli maata kohti = suuri arvo\n");
+		printk("1 = x-akseli taivasta kohti = pieni arvo\n");
+		printk("2 = y-akseli maata kohti = suuri arvo\n");
+		printk("3 = y-akseli taivasta kohti = pieni arvo\n");
+		printk("4 = z-akseli maata kohti = suuri arvo\n");
+		printk("5 = z-akseli taivasta kohti = pieni arvo\n");
+		
+		if (position_value > 5)
+		{
+			position_value = 0;
+		}
+		printk("position_value vaihdon jälkeen = %d\n", position_value);
+	}		
+	
 }
 static void on_connected(struct bt_conn *conn, uint8_t err)
 {

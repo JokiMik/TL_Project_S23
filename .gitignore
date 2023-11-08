@@ -1,2 +1,4 @@
-Working_ADC_Solution/build/
+**/build*
+**/.vscode/
+*/.vscode/
 .vscode/

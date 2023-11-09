@@ -27,7 +27,7 @@ static struct bt_le_adv_param *adv_param = BT_LE_ADV_PARAM(
 	801, /* Max Advertising Interval 500.625ms (801*0.625ms) */
 	NULL); /* Set to NULL for undirected advertising */
 
-LOG_MODULE_REGISTER(Lesson4_Exercise2, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
 
 #define DEVICE_NAME CONFIG_BT_DEVICE_NAME
 #define DEVICE_NAME_LEN (sizeof(DEVICE_NAME) - 1)
@@ -117,22 +117,15 @@ void send_data_thread(void)
 	while (1) 
 	{
 		struct Measurement m = readADCValue();
-		printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
-
+		LOG_INF("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
+		LOG_WRN("position_value = %d\n", position_value);
 		/* Send notification, the function sends notifications only if a client is subscribed */
-		my_lbs_send_sensor_notify(position_value);
-		printk("Sending position value: %d\n", position_value);
-		k_sleep(K_MSEC(NOTIFY_INTERVAL));	
+		my_lbs_send_sensor_notify(position_value);		
 		my_lbs_send_sensor_notify(m.x);
-		printk("Sending x value: %d\n", m.x);
-		k_sleep(K_MSEC(NOTIFY_INTERVAL));
 		my_lbs_send_sensor_notify(m.y);
-		printk("Sending y value: %d\n", m.y);
-		k_sleep(K_MSEC(NOTIFY_INTERVAL));
 		my_lbs_send_sensor_notify(m.z);
-		printk("Sending z value: %d\n", m.z);
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));	
-
+		
 	}
 
 }
@@ -153,8 +146,8 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 	{
 		position_value++;
 
-		printk("Nappi 2 alhaalla\n");
-		printk("vaihdan anturin suuntaa...\n");
+		LOG_WRN("Nappi 2 alhaalla\n");
+		LOG_ERR("vaihdan anturin suuntaa...\n");
 		printk("0 = x-akseli maata kohti = suuri arvo\n");
 		printk("1 = x-akseli taivasta kohti = pieni arvo\n");
 		printk("2 = y-akseli maata kohti = suuri arvo\n");

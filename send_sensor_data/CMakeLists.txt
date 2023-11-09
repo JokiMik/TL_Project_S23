@@ -12,13 +12,8 @@ project(NONE)
 target_sources(app PRIVATE
   src/main.c
   src/my_lbs.c
+  src/adc.c
 )
 
 # NORDIC SDK APP END
 zephyr_library_include_directories(.)
-
-find_package(Zephyr HINTS $ENV{ZEPHYR_BASE})
-project(ADC)
-
-target_sources(app PRIVATE src/main.c)
-target_sources(app PRIVATE src/adc.c)

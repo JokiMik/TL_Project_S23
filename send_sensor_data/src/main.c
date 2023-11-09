@@ -120,6 +120,9 @@ void send_data_thread(void)
 		printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
 
 		/* Send notification, the function sends notifications only if a client is subscribed */
+		my_lbs_send_sensor_notify(position_value);
+		printk("Sending position value: %d\n", position_value);
+		k_sleep(K_MSEC(NOTIFY_INTERVAL));	
 		my_lbs_send_sensor_notify(m.x);
 		printk("Sending x value: %d\n", m.x);
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));
@@ -128,10 +131,7 @@ void send_data_thread(void)
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));
 		my_lbs_send_sensor_notify(m.z);
 		printk("Sending z value: %d\n", m.z);
-		k_sleep(K_MSEC(NOTIFY_INTERVAL));
-		my_lbs_send_sensor_notify(position_value);
-		printk("Sending position value: %d\n", position_value);
-		k_sleep(K_MSEC(NOTIFY_INTERVAL));		
+		k_sleep(K_MSEC(NOTIFY_INTERVAL));	
 
 	}
 

@@ -148,12 +148,12 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 
 		LOG_WRN("Nappi 2 alhaalla\n");
 		LOG_ERR("vaihdan anturin suuntaa...\n");
-		printk("0 = x-akseli maata kohti = suuri arvo\n");
-		printk("1 = x-akseli taivasta kohti = pieni arvo\n");
-		printk("2 = y-akseli maata kohti = suuri arvo\n");
-		printk("3 = y-akseli taivasta kohti = pieni arvo\n");
-		printk("4 = z-akseli maata kohti = suuri arvo\n");
-		printk("5 = z-akseli taivasta kohti = pieni arvo\n");
+		printk("0 = x-akseli maata kohti = pieni arvo\n");
+		printk("1 = x-akseli taivasta kohti = suuri arvo\n");
+		printk("2 = y-akseli maata kohti = pieni arvo\n");
+		printk("3 = y-akseli taivasta kohti = suuri arvo\n");
+		printk("4 = z-akseli maata kohti = pieni arvo\n");
+		printk("5 = z-akseli taivasta kohti = suuri arvo\n");
 		
 		if (position_value > 5)
 		{

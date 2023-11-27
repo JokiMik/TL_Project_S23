@@ -12,3 +12,9 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 3. TCP client datan lukemien tietokannasta, Python
 2. K-means opetusalgoritmi ja opetus, Python
 3. K-means mittaukset + confusion matrix, C & NRF5340DK
+
+## K-means opetusalgoritmi
+<picture>
+ <img alt="Sensoridata3D" src="Sensoridata3D.png">
+</picture>
+Yllä olevassa kuvassa näkyy sensoridata 3D-avaruudessa, ennen luokittelua.

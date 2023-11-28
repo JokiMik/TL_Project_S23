@@ -11,8 +11,18 @@ data[6:8,1] = 10 #y-suunta iso arvo
 data[8:10,2] = 1  #z-suunta pieni arvo
 data[10:12,2] = 10 #z-suunta iso arvo
 
-print(data)
+#Step 2. Arvotaan keskipisteet
+numberOfRows = data.shape[0]
+numberOfCP = 1
+maxValue = np.max(data)
+centerPoints = np.random.randint(200, maxValue, size=(4, 3)) # 4kpl satunnaisia keskipisteitä väliltä 0-maxarvo
+print(centerPoints)
 
+
+#Step 4. Lasketaan etäisyydet keskipisteistä pisteisiin
+centerPointCumulativeSum = np.zeros((numberOfCP,3)) #
+counts = np.zeros((1,numberOfCP)) # laskuri voittaville pisteille (eli mikä piste lähinnä mitäkin keskipistettä)
+distances = np.zeros((1,numberOfCP)) # etäisyydet keskipisteistä pisteisiin
 # Tulostetaan pisteet 3D kuvaajaan
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')

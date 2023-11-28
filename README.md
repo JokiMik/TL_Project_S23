@@ -17,4 +17,17 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 <picture>
  <img alt="Sensoridata3D" src="Sensoridata3D.png">
 </picture>
-Yllä olevassa kuvassa näkyy sensoridata 3D-avaruudessa, ennen luokittelua.
+
+Kuvassa näkyy sensoridata 3D-avaruudessa, ennen luokittelua.
+
+<picture>
+ <img alt="Sensordata3D_randomCP" src="Sensordata3D_randomCP.png">
+</picture>
+
+Tilanne ennen opetusta. Arvottu 6 kappaletta keskipisteitä.
+
+<picture>
+ <img alt="Sensordata3D_luokiteltu" src="Sensordata3D_luokiteltu.png">
+</picture>
+
+Tilanne 50 opetuskerran jälkeen. Kuvasta näähdään että keskipisteet ovat sijoittuneet oikeisiin paikkoihin.

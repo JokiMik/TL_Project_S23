@@ -15,29 +15,28 @@ df = pd.read_csv('data.csv',sep=';')
 data = df.iloc[:,6:9].to_numpy()
 
 
-
-#Step 2. Arvotaan keskipisteet
-numberOfRows = data.shape[0]
-numberOfCP = 6
+numberOfRows = data.shape[0] #rivien määrä eli x,y,z pisteiden määrä
+numberOfCP = 6 
 maxValue = np.max(data)
-centerPoints = np.random.randint(800, maxValue, size=(6, 3)) # 4kpl satunnaisia keskipisteitä väliltä 800-maxarvo
+#Step 2. Arvotaan keskipisteet
+centerPoints = np.random.randint(800, maxValue, size=(6, 3)) # 6kpl satunnaisia keskipisteitä väliltä 800-maxarvo
 #print(centerPoints)
 
 #Tulostetaan kuvaaja ennen opetusta
 sub.plotData(data, centerPoints)
 
-
-#Step 4. Lasketaan etäisyydet keskipisteistä pisteisiin
-centerPointCumulativeSum = np.zeros((numberOfCP,3)) #
+#Alustetaan tarvittavat muuttujat opetusta varten
+centerPointCumulativeSum = np.zeros((numberOfCP,3)) #keksipisteiden kumulatiivinen summataulukko
 counts = np.zeros((1,numberOfCP)) # laskuri voittaville pisteille (eli mikä piste lähinnä mitäkin keskipistettä)
 distances = np.zeros((1,numberOfCP)) # etäisyydet keskipisteistä pisteisiin
 
 #Määritetään kuvaaja ennen opetusta
 fig = plt.figure()
 
-teachingRounds = 50
+teachingRounds = 100
 
 for kierros in range(teachingRounds): #Step 7. Opetusta toistetaan riittävän monta kertaa
+    #Step 4. Lasketaan etäisyydet keskipisteistä kaikkiin pisteisiin
     for i in range(0,numberOfRows): # käydään läpi kaikki pisteet data matriisista
         for j in range(0,numberOfCP): # käydään läpi kaikki keskipisteet
             distances[0,j] = sub.etaisyysLaskuri(data[i,:],centerPoints[j,:]) # lasketaan jokaisen pisteen etäisyys keskipisteen
@@ -57,7 +56,7 @@ for kierros in range(teachingRounds): #Step 7. Opetusta toistetaan riittävän m
             centerPoints[i,:] = centerPointCumulativeSum[i,:] / counts[0,i] #päivitetään uusi keksipiste keskiarvolla (summa jaettuna laskurilla)
     
     # Tulosta kuvaaja jokaisen kierroksen jälkeen
-    plt.clf()
+    plt.clf() # tyhjennetään kuvaaja
     ax = fig.add_subplot(projection='3d')
     ax.set_title('Sensoridata 3D-avaruudessa')
     ax.set_xlabel('x-akseli')
@@ -68,8 +67,6 @@ for kierros in range(teachingRounds): #Step 7. Opetusta toistetaan riittävän m
     plt.pause(0.1)
 plt.show()
 
-# Tulosta kuvaaja opetuksen jälkeen
-#sub.plotData(data, centerPoints)
 
-#Step 8. 6-keskipisteen tallennus kmeans.h tiedostoon
-#Tallennetaan keskipisteet kmeans.h tiedostoon
+#Step 8. Keksipisteiden tallennus kmeans.h tiedostoon        
+sub.printCenterPoints("kmeans.h",centerPoints,numberOfCP)

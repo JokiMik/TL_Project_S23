@@ -18,6 +18,24 @@ def etaisyysLaskuri(p1, p2):
     etaisyys = np.sqrt(np.power(p2[0]-p1[0],2)  + np.power(p2[1]-p1[1],2)  +  np.power(p2[2]-p1[2],2))
     return(etaisyys)
 
+#Tallennetaan keskipisteet kmeans.h tiedostoon
+def printCenterPoints(filename,CPdata,numOfCP):
+    with open (filename, 'w') as f:
+        f.write("const int centerPoints[6][3] = {\n")
+        for i in range(0,numOfCP):
+            f.write("{")
+            f.write(str(CPdata[i,0]))
+            f.write(",")
+            f.write(str(CPdata[i,1]))
+            f.write(",")
+            f.write(str(CPdata[i,2]))
+            f.write("},\n")
+        f.write("};")
+        f.close()
+    print("Keskipisteet tallennettu kmeans.h tiedostoon")
+
+
+
 if __name__ == "__main__":
     #Step 3. Testataan etäisyys laskuria
     piste1 = np.array([1,1,1])

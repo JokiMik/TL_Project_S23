@@ -61,7 +61,7 @@ for kierros in range(teachingRounds): # Step 7. Opetusta toistetaan riittävän 
 
     # Päivitetään kuvaajaan uudet keskipisteet
     plt.clf() # tyhjennetään kuvaaja
-    ax = fig.add_subplot(111, projection='3d')  # Ensimmäinen subplot
+    ax = fig.add_subplot(111,projection='3d')
     ax.set_title(f'Sensoridata 3D-avaruudessa\nOpetuskertoja: {kierros+1}/{teachingRounds}')
     ax.set_xlabel('x-akseli')
     ax.set_ylabel('y-akseli')
@@ -74,3 +74,4 @@ plt.show()
 
 #Step 8. Keksipisteiden tallennus kmeans.h tiedostoon        
 sub.printCenterPoints("kmeans.h",centerPoints,numberOfCP)
+

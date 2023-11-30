@@ -40,22 +40,26 @@ plt.show()
 teachingRounds = 1
 
 for kierros in range(teachingRounds):
-    for i in range(0,numberOfRows):
-        for j in range(0,numberOfCP):
-            distances[0,j] = sub.etaisyysLaskuri(data[i,:],centerPoints) # lasketaan jokaisen pisteen etäisyys keskipisteeseen
-            print("distance = ",distances[0,j])
+    counts[:] = 0 # laskurin nollaus
+    centerPointCumulativeSum[:] = 0 # kumulatiivisen summan nollaus
+
+    # Step 4. Lasketaan etäisyydet keskipisteistä kaikkiin pisteisiin
+    for i in range(numberOfRows): # käydään läpi kaikki pisteet data matriisista
+        for j in range(numberOfCP): # käydään läpi kaikki keskipisteet
+            distances[:,j] = sub.etaisyysLaskuri(data[i,:],centerPoints) # lasketaan jokaisen pisteen etäisyys keskipisteen
         voittaja = np.argmin(distances) # tallennetaan voittavan keskipisteen indeksi
-        print("voittaja = ",voittaja)
         
-        for k in range(0,numberOfCP):
-            if voittaja == k:
-                centerPointCumulativeSum[k,:] = centerPointCumulativeSum[k,:] + data[i,:] #lisätään voittavan keskipisteen summaan voittava piste
-                counts[0,k] = counts[0,k] + 1 #lisätään voittaneen keskipisteen laskuriin yksi
-                print("centerPointCumulativeSum = ",centerPointCumulativeSum[k,:])
+        # Step 5. Voittajan päivittäminen
+        centerPointCumulativeSum[voittaja,:] = centerPointCumulativeSum[voittaja,:] + data[i,:] # lisätään voittavan keskipisteen kumulatiiviseen summaan voittava piste
+        counts[:,voittaja] = counts[:,voittaja] + 1 # lisätään voittaneen keskipisteen laskuriin yksi
+
+    # Step 6. Lasketaan uudet keskipisteet
+    for i in range(numberOfCP):
+        if counts[:,i] == 0:
+            centerPoints = np.random.randint(800, maxValue, size=(1, 3)) # jos keskipisteelle ei ole yhtään voittavaa pistettä, arvotaan uusi keskipiste
+        else:
+            centerPoints = centerPointCumulativeSum[i,:] / counts[:,i] # päivitetään uusi keksipiste keskiarvolla (summa jaettuna laskurilla)
     
-    #Step 5. Lasketaan uudet keskipisteet
-    for i in range(0,numberOfCP):
-        centerPoints = centerPointCumulativeSum[i,:] / counts[0,i] #keskiarvo (summa jaettuna laskurilla)
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')

@@ -8,10 +8,11 @@ df = pd.read_csv('data.csv',sep=';')
 print(df.head())
 
 #Tulostetaan pelkät x,y,z arvot
-print(df.iloc[:,6:9])
+print(df.iloc[0:111,6:9])
 
 # Muutetaan pandas dataframe numpy matriisiksi
-data = df.iloc[:,6:9].to_numpy()
+#data = df.iloc[:,6:9].to_numpy()
+data = df.iloc[0:112,6:9].to_numpy() # otetaan vain 112 ensimmäistä riviä, joissa sensoria pidetty paikallaan
 
 # Tulostetaan pisteet 3D kuvaajaan
 fig = plt.figure()

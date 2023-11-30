@@ -21,16 +21,19 @@ def etaisyysLaskuri(p1, p2):
 #Tallennetaan keskipisteet kmeans.h tiedostoon
 def printCenterPoints(filename,CPdata,numOfCP):
     with open (filename, 'w') as f:
+        f.write("#ifndef KMEANS_H_\n")
+        f.write("#define KMEANS_H_\n")
         f.write("const int centerPoints[6][3] = {\n")
-        for i in range(0,numOfCP):
+        for i in range(numOfCP):
             f.write("{")
-            f.write(str(CPdata[i,0]))
+            f.write(str(CPdata[i,0])) #x
             f.write(",")
-            f.write(str(CPdata[i,1]))
+            f.write(str(CPdata[i,1])) #y
             f.write(",")
-            f.write(str(CPdata[i,2]))
+            f.write(str(CPdata[i,2])) #z
             f.write("},\n")
         f.write("};")
+        f.write("\n#endif")
         f.close()
     print("Keskipisteet tallennettu kmeans.h tiedostoon")
 

@@ -2,31 +2,63 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 def relu(x):
-	return np.maximum(0, x)
-	'''
-	if(x < 0):
-		return 0                            # relu aktivaatio palauttaa aina nollan jos luku on negatiivinen, muuten x:än
-	else:
-		return x
-	'''
+	for i in range(len(x)):
+		if x[i] < 0:
+			x[i] = 0
+	return x
+	#return np.maximum(0, x)
 
 def softmax(x):
-	e_x = np.exp(x - np.max(x))  # vähennä maksimi estääksesi ylivuodon #return(np.exp(x)/np.exp(x).sum())
-	return e_x / e_x.sum(axis=0)  # jaa jokainen elementti summan mukaan
+	return(np.exp(x)/np.exp(x).sum())
 
 w1 = np.loadtxt('w1.csv', delimiter=',')
 w2 = np.loadtxt('w2.csv', delimiter=',')
 b1 = np.loadtxt('b1.csv', delimiter=',')
 b2 = np.loadtxt('b2.csv', delimiter=',')
 
-a0 = np.array([1500,1500,1800]) # testidata
-print(a0.shape)
-print(w1.shape)
-print(b1.shape)
-print(w2.shape)
-print(b2.shape)
+a0 = np.array([1500,1500,1200]) # testidata
+print('len w1 = ',len(w1))
+print('shape a0',a0.shape)
+print('shape w1',w1.shape)
+print('shape b1',b1.shape)
+print('shape w2',w2.shape)
+print('shape b2',b2.shape)
 
 a1 = relu(np.matmul(a0,w1) + b1) 
 a2 = softmax(np.matmul(a1,w2) + b2) 
 
+'''
+matmul = np.matmul(a0,w1) 
+print('Miltä matmul tulos näyttää',matmul)
+
+c = np.zeros((w1.shape[1], 1))
+for i in range(w1.shape[1]):  # Käydään läpi w1-matriisin sarakkeet
+    for j in range(a0.shape[0]):  # Käydään läpi a0-matriisin rivit
+        c[i] += a0[j] * w1[j][i]  # Lasketaan pistetulo ja päivitetään c-matriisi
+
+c = c.reshape(10,)
+print('testi',c)
+toimiiko = relu(c + b1)
+print('toimiiko',toimiiko)
+'''
+
 print("Neuroverkon tulos: ", np.argmax(a2))
+
+b1 = b1.reshape(10,1)
+b2 = b2.reshape(6,1)
+
+def writeDataToHeaderFile(data, filename): 
+    with open(filename+'.h', 'w') as f:
+        f.write(f'#ifndef {filename}_H\n')
+        f.write(f'#define {filename}_H\n')
+        f.write(f'const float {filename}[{data.shape[0]}][{data.shape[1]}] = {{')
+        for i in range(data.shape[0]):
+            f.write("{")
+            for j in range(data.shape[1]):
+                f.write(str(data[i,j]))
+                if j != data.shape[1]-1:
+                    f.write(",")
+            f.write("},\n")
+        f.write('};\n')
+        f.write('#endif\n')
+writeDataToHeaderFile(b1, 'B1')

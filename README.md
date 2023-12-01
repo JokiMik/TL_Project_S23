@@ -33,15 +33,13 @@ K-means opetusalgoritmillä sensoridatasta saadaan tunnistettua ja luokiteltua k
 *Kuva 2. Sensoridata 3D-avaruudessa, ennen luokittelua.*
 
 <picture>
- <img alt="Sensordata3D_randomCP" src="Sensordata3D_randomCP.png">
+ <img alt="Opetus pelkkä vakaadata" src="kmeans_vakaadata.gif">
 </picture>
 
-*Kuva 3. Sensoridata ja 6 kappaletta arvottuja keskipisteitä.*
+*Kuva 3. K-means-algoritmin opetus vakaalla sensoridatalla.*
 
 <picture>
- <img alt="Sensordata3D_luokiteltu" src="Sensordata3D_luokiteltu.png">
+ <img alt="Opetus kokodatalla" src="kmeans.gif">
 </picture>
 
-*Kuva 4. Sensoridata ja opetetut keskipisteet 20 opetuskerran jälkeen.* 
-
-Kuvasta 4 nähdään, että keskipisteet ovat sijoittuneet oikeisiin paikkoihin. Arvotuista keksipisteistä johtuen, luokittelu ei aina onnistu edes 50:ään opetuskerralla.
+*Kuva 4. K-means-algoritmin opetus sensoridatalla, jossa kiihtyvyysanturia on heiluteltu.* 

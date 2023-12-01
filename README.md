@@ -42,6 +42,6 @@ K-means opetusalgoritmillä sensoridatasta saadaan tunnistettua ja luokiteltua k
  <img alt="Sensordata3D_luokiteltu" src="Sensordata3D_luokiteltu.png">
 </picture>
 
-*Kuva 4. Sensoridata ja opetetut keskipisteet 50 opetuskerran jälkeen.* 
+*Kuva 4. Sensoridata ja opetetut keskipisteet 20 opetuskerran jälkeen.* 
 
-Kuvasta 4 nähdään, että keskipisteet ovat sijoittuneet oikeisiin paikkoihin. Arvotuista keksipisteistä sekä sensoridatan vaihtelusta (jonka teimme tarkoituksella) johtuen, luokittelu ei aina onnistu edes 50:ään opetuskerralla.
+Kuvasta 4 nähdään, että keskipisteet ovat sijoittuneet oikeisiin paikkoihin. Arvotuista keksipisteistä johtuen, luokittelu ei aina onnistu edes 50:ään opetuskerralla.

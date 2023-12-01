@@ -44,21 +44,31 @@ print('toimiiko',toimiiko)
 
 print("Neuroverkon tulos: ", np.argmax(a2))
 
-b1 = b1.reshape(10,1)
-b2 = b2.reshape(6,1)
+# .h tiedostojen kirjoittaminen
 
 def writeDataToHeaderFile(data, filename): 
     with open(filename+'.h', 'w') as f:
         f.write(f'#ifndef {filename}_H\n')
         f.write(f'#define {filename}_H\n')
-        f.write(f'const float {filename}[{data.shape[0]}][{data.shape[1]}] = {{')
-        for i in range(data.shape[0]):
-            f.write("{")
-            for j in range(data.shape[1]):
-                f.write(str(data[i,j]))
-                if j != data.shape[1]-1:
+        if len(data.shape) == 1:  # Tarkistetaan jos data on vektori
+            f.write(f'const float {filename}[{data.shape[0]}] = {{')
+            for i in range(data.shape[0]):
+                f.write(str(data[i]))
+                if i != data.shape[0]-1:
                     f.write(",")
-            f.write("},\n")
+        else:  # Jos data on matriisi
+            f.write(f'const float {filename}[{data.shape[0]}][{data.shape[1]}] = {{')
+            for i in range(data.shape[0]):
+                f.write("{")
+                for j in range(data.shape[1]):
+                    f.write(str(data[i,j]))
+                    if j != data.shape[1]-1:
+                        f.write(",")
+                f.write("},\n")
         f.write('};\n')
         f.write('#endif\n')
-writeDataToHeaderFile(b1, 'B1')
+
+writeDataToHeaderFile(w1, 'W1')
+writeDataToHeaderFile(b1, 'b1')
+writeDataToHeaderFile(w2, 'W2')
+writeDataToHeaderFile(b2, 'b2')

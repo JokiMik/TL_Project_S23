@@ -33,13 +33,13 @@ K-means opetusalgoritmillä sensoridatasta saadaan tunnistettua ja luokiteltua k
 *Kuva 2. Sensoridata 3D-avaruudessa, ennen luokittelua.*
 
 <picture>
- <img alt="Opetus pelkkä vakaadata" src="kmeans_vakaadata.gif">
-</picture>
-
-*Kuva 3. K-means-algoritmin opetus vakaalla sensoridatalla.*
-
-<picture>
  <img alt="Opetus kokodatalla" src="kmeans.gif">
 </picture>
 
-*Kuva 4. K-means-algoritmin opetus sensoridatalla, jossa kiihtyvyysanturia on heiluteltu.* 
+*Kuva 3. K-means-algoritmin opetus.* 
+
+<picture>
+ <img alt="Opetus pelkkä vakaadata" src="kmeans_vakaadata.gif">
+</picture>
+
+*Kuva 4. K-means-algoritmin opetus pelkästään vakaalla sensoridatalla.*

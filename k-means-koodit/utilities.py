@@ -1,5 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import requests
+
+#Hakee dataa kannasta grouopid:llä ja tallentaa sen csv tiedostoon
+def getSensorData(groupid):
+    url = f"http://172.20.241.9/luedataa_kannasta_groupid_csv.php?groupid={groupid}"  
+    response = requests.get(url)
+    #print(response.text)
+    with open(f'group{groupid}_data.csv', 'w') as file:
+        file.write(response.text)
 
 # Tulostaa tunnetut ja arvotut pisteet 3D kuvaajaan
 def plotData(data, centerPoints):
@@ -19,18 +28,18 @@ def etaisyysLaskuri(p1, p2):
     return(etaisyys)
 
 #Tallennetaan keskipisteet kmeans.h tiedostoon
-def printCenterPoints(filename,CPdata,numOfCP):
+def printCenterPoints(filename,CP,numOfCP):
     with open (filename, 'w') as f:
-        f.write("#ifndef KMEANS_H_\n")
-        f.write("#define KMEANS_H_\n")
+        f.write("#ifndef KMEANS_H\n")
+        f.write("#define KMEANS_H\n")
         f.write("const int centerPoints[6][3] = {\n")
         for i in range(numOfCP):
             f.write("{")
-            f.write(str(CPdata[i,0])) #x
+            f.write(str(CP[i,0])) #x
             f.write(",")
-            f.write(str(CPdata[i,1])) #y
+            f.write(str(CP[i,1])) #y
             f.write(",")
-            f.write(str(CPdata[i,2])) #z
+            f.write(str(CP[i,2])) #z
             f.write("},\n")
         f.write("};")
         f.write("\n#endif")
@@ -45,3 +54,5 @@ if __name__ == "__main__":
     piste2 = np.array([2,2,2])
     etaisyys = etaisyysLaskuri(piste1,piste2)
     print("Etäisyys testilasku (neliöjuuri 3) = ",etaisyys)
+    getSensorData(5)
+

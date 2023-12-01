@@ -4,9 +4,9 @@ import pandas as pd
 import utilities as sub
 
 #Step 1 Datan lukeminen tiedostosta ja muuttaminen numpy matriisiksi
-df = pd.read_csv('data.csv',sep=';')
 
-#print(df.head())
+#sub.getSensorData(5)#Haetaan data kannasta
+df = pd.read_csv('group5_data.csv',sep=';')
 
 #Tulostetaan pelkät x,y,z arvot
 #print(df.iloc[:,6:9])
@@ -16,10 +16,11 @@ data = df.iloc[:,6:9].to_numpy()
 #data = data[0:112,:] # otetaan vain 112 ensimmäistä riviä, joissa sensoria pidetty paikallaan joka suunnassa
 
 numberOfRows = data.shape[0] #rivien määrä eli x,y,z pisteiden määrä
-numberOfCP = 6 
-maxValue = np.max(data)
+numberOfCP = 6
+minValue = 1000 # minimiarvo keskipisteille
+maxValue = 2000 # maksimiarvo keskipisteille
 #Step 2. Arvotaan keskipisteet
-centerPoints = np.random.randint(800, maxValue, size=(6, 3)) # 6kpl satunnaisia keskipisteitä väliltä 800-maxarvo
+centerPoints = np.random.randint(minValue, maxValue, size=(numberOfCP, 3)) # 6kpl satunnaisia keskipisteitä väliltä 800-maxarvo
 #print(centerPoints)
 
 #Tulostetaan kuvaaja ennen opetusta
@@ -33,7 +34,7 @@ distances = np.zeros((1,numberOfCP)) # etäisyydet keskipisteistä pisteisiin
 # Määritetään kuvaaja ennen opetusta
 fig = plt.figure()
 
-teachingRounds = 50
+teachingRounds = 20
 
 for kierros in range(teachingRounds): # Step 7. Opetusta toistetaan riittävän monta kertaa
     counts[:] = 0 # laskurin nollaus
@@ -52,7 +53,7 @@ for kierros in range(teachingRounds): # Step 7. Opetusta toistetaan riittävän 
     # Step 6. Lasketaan uudet keskipisteet
     for i in range(numberOfCP):
         if counts[:,i] == 0: # jos keskipisteelle ei ole yhtään voittavaa pistettä, arvotaan uusi keskipiste
-            centerPoints[i,:] = np.random.randint(800, maxValue, size=(1, 3)) 
+            centerPoints[i,:] = np.random.randint(minValue, maxValue, size=(1, 3)) 
         else:
             centerPoints[i,:] = centerPointCumulativeSum[i,:] / counts[:,i] # päivitetään uusi keksipiste keskiarvolla (summa jaettuna laskurilla)
     

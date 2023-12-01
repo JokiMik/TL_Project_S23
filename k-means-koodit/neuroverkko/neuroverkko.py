@@ -46,18 +46,16 @@ print("Neuroverkon tulos: ", np.argmax(a2))
 
 # .h tiedostojen kirjoittaminen
 
-def writeDataToHeaderFile(data, filename): 
-    with open(filename+'.h', 'w') as f:
-        f.write(f'#ifndef {filename}_H\n')
-        f.write(f'#define {filename}_H\n')
-        if len(data.shape) == 1:  # Tarkistetaan jos data on vektori
-            f.write(f'const float {filename}[{data.shape[0]}] = {{')
+def writeDataToHeaderFile(data, filename, varname): 
+    with open(filename+'.h', 'a') as f:
+        if len(data.shape) == 1:  # tarkistus onko data vektori vai matriisi
+            f.write(f'const float {varname}[{data.shape[0]}] = {{')
             for i in range(data.shape[0]):
                 f.write(str(data[i]))
                 if i != data.shape[0]-1:
                     f.write(",")
-        else:  # Jos data on matriisi
-            f.write(f'const float {filename}[{data.shape[0]}][{data.shape[1]}] = {{')
+        else:  # data on matriisi
+            f.write(f'const float {varname}[{data.shape[0]}][{data.shape[1]}] = {{')
             for i in range(data.shape[0]):
                 f.write("{")
                 for j in range(data.shape[1]):
@@ -66,9 +64,19 @@ def writeDataToHeaderFile(data, filename):
                         f.write(",")
                 f.write("},\n")
         f.write('};\n')
+
+def writeWeightsToHeaderFile(w1, b1, w2, b2, filename):
+    # Kirjoitetaan header-tiedostoon alkuosa
+    with open(filename+'.h', 'w') as f:
+        f.write(f'#ifndef {filename.upper()}_H\n')
+        f.write(f'#define {filename.upper()}_H\n')
+    # Lisätään tiedostoon painot ja biasit
+    writeDataToHeaderFile(w1, filename, 'W1')
+    writeDataToHeaderFile(b1, filename, 'B1')
+    writeDataToHeaderFile(w2, filename, 'W2')
+    writeDataToHeaderFile(b2, filename, 'B2')
+    #lopuksi lisätään header-tiedostoon loppuosa
+    with open(filename+'.h', 'a') as f:
         f.write('#endif\n')
 
-writeDataToHeaderFile(w1, 'W1')
-writeDataToHeaderFile(b1, 'B1')
-writeDataToHeaderFile(w2, 'W2')
-writeDataToHeaderFile(b2, 'B2')
+writeWeightsToHeaderFile(w1, b1, w2, b2, 'neuroverkonKertoimet')

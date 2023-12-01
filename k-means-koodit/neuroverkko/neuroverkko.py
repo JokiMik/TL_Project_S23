@@ -69,6 +69,6 @@ def writeDataToHeaderFile(data, filename):
         f.write('#endif\n')
 
 writeDataToHeaderFile(w1, 'W1')
-writeDataToHeaderFile(b1, 'b1')
+writeDataToHeaderFile(b1, 'B1')
 writeDataToHeaderFile(w2, 'W2')
-writeDataToHeaderFile(b2, 'b2')
+writeDataToHeaderFile(b2, 'B2')

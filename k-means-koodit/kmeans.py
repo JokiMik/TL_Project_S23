@@ -74,4 +74,4 @@ plt.show()
 #sub.plotData(data, centerPoints)
 
 #Step 8. Keksipisteiden tallennus kmeans.h tiedostoon        
-sub.printCenterPoints("kmeans.h",centerPoints,numberOfCP)
+#sub.printCenterPoints("keskipisteet.h",centerPoints,numberOfCP)

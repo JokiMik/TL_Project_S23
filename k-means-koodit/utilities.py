@@ -40,7 +40,7 @@ def printCenterPoints(filename,CP,numOfCP):
 
     # Järjestetään keskipisteet haluttuun järjestykseen
     orderedIndices = [xmin, xmax, ymin, ymax, zmin, zmax]
-    centerPoints = centerPoints[orderedIndices]
+    CP = CP[orderedIndices]
 
     with open (filename, 'w') as f:
         f.write("#ifndef KMEANS_H\n")

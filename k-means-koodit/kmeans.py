@@ -13,7 +13,7 @@ df = pd.read_csv('group5_data.csv',sep=';')
 
 # Muutetaan vain xyz sarakkeet numpy matriisiksi
 data = df.iloc[:,6:9].to_numpy()
-#data = data[0:112,:] # otetaan vain 112 ensimmäistä riviä, joissa sensoria pidetty paikallaan joka suunnassa
+data = data[0:112,:] # otetaan vain 112 ensimmäistä riviä, joissa sensoria pidetty paikallaan joka suunnassa
 
 numberOfRows = data.shape[0] #rivien määrä eli x,y,z pisteiden määrä
 numberOfCP = 6
@@ -56,7 +56,7 @@ for kierros in range(teachingRounds): # Step 7. Opetusta toistetaan riittävän 
             centerPoints[i,:] = np.random.randint(minValue, maxValue, size=(1, 3)) 
         else:
             centerPoints[i,:] = centerPointCumulativeSum[i,:] / counts[:,i] # päivitetään uusi keksipiste keskiarvolla (summa jaettuna laskurilla)
-    
+
     #print("Keskipisteet kierroksen ",kierros," jälkeen: ",centerPoints)
     #print("Laskurit kierroksen ",kierros," jälkeen: ",counts)
 
@@ -73,5 +73,5 @@ for kierros in range(teachingRounds): # Step 7. Opetusta toistetaan riittävän 
 plt.show()
 #sub.plotData(data, centerPoints)
 
-#Step 8. Keksipisteiden tallennus kmeans.h tiedostoon        
-#sub.printCenterPoints("keskipisteet.h",centerPoints,numberOfCP)
+#Step 8. Keksipisteiden tallennus kmeans.h tiedostoon
+sub.printCenterPoints("keskipisteet.h",centerPoints,numberOfCP)

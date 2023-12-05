@@ -29,6 +29,19 @@ def etaisyysLaskuri(p1, p2):
 
 #Tallennetaan keskipisteet kmeans.h tiedostoon
 def printCenterPoints(filename,CP,numOfCP):
+    #Järjestetään ensin keskipisteet haluttuun järjestykseen (ensimmäiseksi rivi jossa pienin x, sitten suurin x, pienin y, suurin y, pienin z, suurin z)
+    # Etsitään rivit, joissa x, y ja z ovat pienimmillään ja suurimmillaan
+    xmin = np.argmin(CP[:, 0])
+    xmax = np.argmax(CP[:, 0])
+    ymin = np.argmin(CP[:, 1])
+    ymax = np.argmax(CP[:, 1])
+    zmin = np.argmin(CP[:, 2])
+    zmax = np.argmax(CP[:, 2])
+
+    # Järjestetään keskipisteet haluttuun järjestykseen
+    orderedIndices = [xmin, xmax, ymin, ymax, zmin, zmax]
+    centerPoints = centerPoints[orderedIndices]
+
     with open (filename, 'w') as f:
         f.write("#ifndef KMEANS_H\n")
         f.write("#define KMEANS_H\n")

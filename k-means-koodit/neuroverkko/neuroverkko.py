@@ -36,7 +36,7 @@ print('Miltä matmul tulos näyttää',matmul)
 c1 = np.zeros((w1.shape[1],))
 c2 = np.zeros((w2.shape[1],))
 #c1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-c2 = [0, 0, 0, 0, 0, 0]
+#c2 = [0, 0, 0, 0, 0, 0]
 for i in range(w1.shape[1]):  # Käydään läpi w1-matriisin sarakkeet
     for j in range(a0.shape[0]):  # Käydään läpi a0-matriisin rivit
         c1[i] = c1[i] + a0[j] * w1[j][i]  # Lasketaan pistetulo ja päivitetään c-matriisi

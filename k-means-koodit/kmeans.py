@@ -13,7 +13,7 @@ df = pd.read_csv('group5_data.csv',sep=';')
 
 # Muutetaan vain xyz sarakkeet numpy matriisiksi
 data = df.iloc[:,6:9].to_numpy()
-data = data[0:112,:] # otetaan vain 112 ensimmäistä riviä, joissa sensoria pidetty paikallaan joka suunnassa
+#data = data[0:112,:] # otetaan vain 112 ensimmäistä riviä, joissa sensoria pidetty paikallaan joka suunnassa
 
 numberOfRows = data.shape[0] #rivien määrä eli x,y,z pisteiden määrä
 numberOfCP = 6

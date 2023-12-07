@@ -34,7 +34,7 @@ distances = np.zeros((1,numberOfCP)) # etäisyydet keskipisteistä pisteisiin
 # Määritetään kuvaaja ennen opetusta
 fig = plt.figure()
 
-teachingRounds = 20
+teachingRounds = 50
 
 for kierros in range(teachingRounds): # Step 7. Opetusta toistetaan riittävän monta kertaa
     counts[:] = 0 # laskurin nollaus
@@ -70,6 +70,7 @@ for kierros in range(teachingRounds): # Step 7. Opetusta toistetaan riittävän 
     ax.scatter(data[:,0], data[:,1], data[:,2], c='red')
     ax.scatter(centerPoints[:,0], centerPoints[:,1], centerPoints[:,2], c='blue', marker='X', s=100)
     plt.pause(0.01)
+plt.savefig('kmeans.png')
 plt.show()
 #sub.plotData(data, centerPoints)
 

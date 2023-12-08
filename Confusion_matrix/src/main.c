@@ -16,7 +16,7 @@
 #include <zephyr/devicetree.h>
 
 #include "confusion.h"
-
+//#include "neuroverkonKertoimet.h"
 
 
 
@@ -106,15 +106,69 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 
 		for(int i = 0; i < 100; i++)
 		{
-			makeOneClassificationAndUpdateConfusionMatrix(direction);
+			//makeOneClassificationAndUpdateConfusionMatrix(direction);
+			makeClassificationWithNeuralNetwork(direction);
 		}
 		printConfusionMatrix();
 	}		
 }
 
-
 void main(void)
 {
+	
+	
+	/*	
+	//Lasketaan softmax(a2) TOIMII
+    float max = -__FLT_MAX__; //alustus pienimmällä float luvulla (=suurin negatiivinen luku)
+    float sum = 0;
+
+    // Etsitään suurin arvo
+    for (int i = 0; i < w2Cols; i++) {
+        if (a2[i] > max) {
+            max = a2[i];
+        }
+    }
+
+    // Vähennetään suurin arvo ja lasketaan e:n potenssiin x jokaiselle x:n alkiolle
+    // Laske näiden summa
+    for (int i = 0; i < w2Cols; i++) {
+        a2[i] = exp(a2[i] - max);	//Vähennetään suurin arvo vektorista ennen e:n potenssiin laskemista (estää ylivuodon)
+        sum = sum + a2[i];
+    }
+
+    // Jaa jokainen alkio summan arvolla
+    for (int i = 0; i < w2Cols; i++) {
+        a2[i] = a2[i] / sum;
+    }
+	printk("\nTulos softmax laskun jälkeen:\n");
+	for (int i = 0; i < w2Cols; ++i) 
+	{
+		printk("%f ", a2[i]);
+	}
+	*/
+
+	/*//RELU TESTI TOIMII
+	int relu_array[] = {1, 2, 3, -1, -2, -3};
+    int size = sizeof(relu_array) / sizeof(relu_array[0]);
+	printk("Arrayn koko on %d",size);
+    printk("Alkuperäinen taulukko:\n");
+    for (int i = 0; i < size; ++i) {
+        printk("%d ", relu_array[i]);
+    }
+    printk("\n");
+
+    // Kutsutaan relu-funktiota
+    relu(relu_array, size);
+
+    printk("Muutettu taulukko:\n");
+    for (int i = 0; i < size; ++i) {
+        printk("%d ", relu_array[i]);
+    }
+    printk("\n");
+	*/
+
+
+
 	int err;
 	err = dk_leds_init();
 	if (err) {

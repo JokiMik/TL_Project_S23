@@ -41,7 +41,122 @@ int measurements[6][3]={
 
 int CM[6][6]= {0};
 
+//relu ja softmax funktiot
+void relu(float *array, int size) 
+{
+    for (int i = 0; i < size; ++i) 
+	{
+        if (array[i] < 0) {
+            array[i] = 0;
+        }
+    }
+}
+void softmax(float* x, int length) {
+    float max = -__FLT_MAX__; //alustus pienimmällä float luvulla (=suurin negatiivinen luku)
+    float sum = 0;
 
+    // Etsitään suurin arvo
+    for (int i = 0; i < length; i++) {
+        if (x[i] > max) {
+            max = x[i];
+        }
+    }
+
+    // Vähennetään suurin arvo ja lasketaan e:n potenssiin x jokaiselle x:n alkiolle
+    // Laske näiden summa
+    for (int i = 0; i < length; i++) {
+        x[i] = exp(x[i] - max);	//Vähennetään suurin arvo vektorista ennen e:n potenssiin laskemista (estää ylivuodon)
+        sum = sum + x[i];
+    }
+
+    // Jaa jokainen alkio summan arvolla
+    for (int i = 0; i < length; i++) {
+        x[i] = x[i] / sum;
+    }
+}
+
+void makeClassificationWithNeuralNetwork(int direction)
+{
+   struct Measurement m = readADCValue();
+   float a0[3] = {m.x, m.y, m.z}; //input data
+   //float a0[3] = {1200,1500,1500};
+	float a1[10] = {0};	//hidden layer
+	float a2[6] = {0}; //output layer
+	int a0Rows = 3;
+	int w1Cols = 10;
+	int w2Cols = 6;
+
+	//Lasketaan matmul a0 * W1
+	for (int i = 0; i < w1Cols; ++i) 
+	{
+		for (int j = 0; j < a0Rows; ++j) 
+		{
+			a1[i] = a1[i] + a0[j] * W1[j][i];
+		}
+	}
+	/*printk("Tulos eka matmul laskun jälkeen:\n");
+	for (int i = 0; i < w1Cols; ++i) 
+	{
+		printk("%f ", a1[i]);
+	}
+	//Lasketaan a1 + b1
+	for (int i = 0; i < w1Cols; ++i) 
+	{
+		a1[i] = a1[i] + B1[i];
+	}
+   */
+	//
+	relu(a1, w1Cols);
+	/*printk("\nTulos relu laskun jälkeen:\n");
+	for (int i = 0; i < w1Cols; ++i) 
+	{
+		printk("%f ", a1[i]);
+	}
+   */
+	//Lasketaan matmul a1 * W2
+	for (int i = 0; i < w2Cols; ++i) 
+	{
+		for (int j = 0; j < w1Cols; ++j) 
+		{
+			a2[i] = a2[i] + a1[j] * W2[j][i];
+		}
+	}
+	/*printk("\nTulos toka matmul laskun jälkeen:\n");
+	for (int i = 0; i < w2Cols; ++i) 
+	{
+		printk("%f ", a2[i]);
+	}
+   */
+	//Lasketaan a2 + b2
+	for (int i = 0; i < w2Cols; ++i) 
+	{
+		a2[i] = a2[i] + B2[i];
+	}
+	/*printk("\nTulos a2 + b2 laskun jälkeen:\n");
+	for (int i = 0; i < w2Cols; ++i) 
+	{
+		printk("%f ", a2[i]);
+	}
+	*/
+	//Lasketaan softmax(a2)
+	softmax(a2, w2Cols);
+	/*printk("\nTulos softmax laskun jälkeen:\n");
+	for (int i = 0; i < w2Cols; ++i) 
+	{
+		printk("%f ", a2[i]);
+	}
+   */
+   int winnerIndex = 0;
+   float max = -__FLT_MAX__; //alustus pienimmällä float luvulla (=suurin negatiivinen luku)
+   for (int i = 0; i < w2Cols; i++) {
+        if (a2[i] > max) {
+            max = a2[i];
+            winnerIndex = i;
+        }
+    }
+   printk("\nVoittaja = %d\n", winnerIndex + 1);
+   CM[direction][winnerIndex]++; //Kasvatetaan suunnan ja voittajan indeksin mukaista solua yhdellä
+}
 
 void printConfusionMatrix(void)
 {

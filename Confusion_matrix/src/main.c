@@ -42,20 +42,33 @@ static int direction = -1;	// 0 = x direction high
 
 LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
 
+int state = 0; // 0 = k-means, 1 = neural network
+
 static void button_changed(uint32_t button_state, uint32_t has_changed)
 {
 	//printk("button_state = %d\n",button_state);
 	//printk("has_changed = %d\n",has_changed);
 	if ((has_changed & USER_BUTTON_1) && (button_state & USER_BUTTON_1)) 
 	{
-		printk("Button 1 down, printing current Confusion Matrix\n");
-		printConfusionMatrix();
+		printk("Button 1 down, changing current state:\n");
+		if(state == 0)
+		{
+			state = 1;
+			printk("Classification is done with neural network\n");
+		}
+		else
+		{
+			state = 0;
+			printk("Classification is done with k-means\n");
+		}
+		//printk("Button 1 down, printing current Confusion Matrix\n");
+		//printConfusionMatrix();
 	}
 
 	if ((has_changed & USER_BUTTON_2) && (button_state & USER_BUTTON_2)) 
 	{
 		printk("Button 2 down, resetting confusion matrix\n");
-		resetConfusionMatrix();
+		resetConfusionMatrix(state);
 		printConfusionMatrix();
 	}		
 	
@@ -106,8 +119,14 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 
 		for(int i = 0; i < 100; i++)
 		{
-			//makeOneClassificationAndUpdateConfusionMatrix(direction);
-			makeClassificationWithNeuralNetwork(direction);
+			if(state == 0)
+			{
+				makeOneClassificationAndUpdateConfusionMatrix(direction);
+			}
+			else
+			{
+				makeClassificationWithNeuralNetwork(direction);
+			}
 		}
 		printConfusionMatrix();
 	}		

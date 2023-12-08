@@ -41,6 +41,8 @@ int measurements[6][3]={
 
 int CM[6][6]= {0};
 
+int CM2[6][6]= {0};
+
 //relu ja softmax funktiot
 void relu(float *array, int size) 
 {
@@ -94,26 +96,9 @@ void makeClassificationWithNeuralNetwork(int direction)
 			a1[i] = a1[i] + a0[j] * W1[j][i];
 		}
 	}
-	/*printk("Tulos eka matmul laskun jälkeen:\n");
-	for (int i = 0; i < w1Cols; ++i) 
-	{
-		printk("%f ", a1[i]);
-	}
-	//Lasketaan a1 + b1
-	for (int i = 0; i < w1Cols; ++i) 
-	{
-		a1[i] = a1[i] + B1[i];
-	}
-   */
-	//
+   //Lasketeaan relu(a1)
 	relu(a1, w1Cols);
-	/*printk("\nTulos relu laskun jälkeen:\n");
-	for (int i = 0; i < w1Cols; ++i) 
-	{
-		printk("%f ", a1[i]);
-	}
-   */
-	//Lasketaan matmul a1 * W2
+
 	for (int i = 0; i < w2Cols; ++i) 
 	{
 		for (int j = 0; j < w1Cols; ++j) 
@@ -121,50 +106,36 @@ void makeClassificationWithNeuralNetwork(int direction)
 			a2[i] = a2[i] + a1[j] * W2[j][i];
 		}
 	}
-	/*printk("\nTulos toka matmul laskun jälkeen:\n");
-	for (int i = 0; i < w2Cols; ++i) 
-	{
-		printk("%f ", a2[i]);
-	}
-   */
-	//Lasketaan a2 + b2
 	for (int i = 0; i < w2Cols; ++i) 
 	{
 		a2[i] = a2[i] + B2[i];
 	}
-	/*printk("\nTulos a2 + b2 laskun jälkeen:\n");
-	for (int i = 0; i < w2Cols; ++i) 
-	{
-		printk("%f ", a2[i]);
-	}
-	*/
-	//Lasketaan softmax(a2)
+   //Lasketaan softmax(a2)
 	softmax(a2, w2Cols);
-	/*printk("\nTulos softmax laskun jälkeen:\n");
-	for (int i = 0; i < w2Cols; ++i) 
-	{
-		printk("%f ", a2[i]);
-	}
-   */
+
+   //Lasketaan voittaja eli se indeksi, jolla on suurin arvo
    int winnerIndex = 0;
    float max = -__FLT_MAX__; //alustus pienimmällä float luvulla (=suurin negatiivinen luku)
    for (int i = 0; i < w2Cols; i++) {
-        if (a2[i] > max) {
-            max = a2[i];
+        if (a2[i] > max) { //Etsitään suurin arvo
+            max = a2[i]; //Tallennetaan suurin arvo
             winnerIndex = i;
         }
     }
    printk("\nVoittaja = %d\n", winnerIndex + 1);
-   CM[direction][winnerIndex]++; //Kasvatetaan suunnan ja voittajan indeksin mukaista solua yhdellä
+   CM2[direction][winnerIndex]++; //Kasvatetaan suunnan ja voittajan indeksin mukaista solua yhdellä
 }
 
 void printConfusionMatrix(void)
 {
-	printk("Confusion matrix = \n");
-	printk("   cp1 cp2 cp3 cp4 cp5 cp6\n");
+	printk("Confusion matrix (k-means) = \t");
+   printk("Confusion matrix (neural network) = \n");
+	printk("   cp1 cp2 cp3 cp4 cp5 cp6\t");
+   printk("   cp1 cp2 cp3 cp4 cp5 cp6\n");
 	for(int i = 0;i<6;i++)
 	{
-		printk("cp%d %d   %d   %d   %d   %d   %d\n",i+1,CM[i][0],CM[i][1],CM[i][2],CM[i][3],CM[i][4],CM[i][5]);
+		printk("cp%d %d   %d   %d   %d   %d   %d\t",i+1,CM[i][0],CM[i][1],CM[i][2],CM[i][3],CM[i][4],CM[i][5]);
+      printk("cp%d %d   %d   %d   %d   %d   %d\n",i+1,CM2[i][0],CM2[i][1],CM2[i][2],CM2[i][3],CM2[i][4],CM2[i][5]);
 	}
 }
 
@@ -234,13 +205,20 @@ int calculateDistanceToAllCentrePointsAndSelectWinner(int x,int y,int z)
    return winnerIndex;
 }
 
-void resetConfusionMatrix(void)
+void resetConfusionMatrix(int state)
 {
 	for(int i=0;i<6;i++)
 	{ 
 		for(int j = 0;j<6;j++)
 		{
-			CM[i][j]=0;
+         if(state == 0)
+         {
+            CM[i][j]=0;
+         }
+         else
+         {
+            CM2[i][j]=0;
+         }
 		}
 	}
 }

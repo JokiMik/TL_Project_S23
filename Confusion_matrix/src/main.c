@@ -212,21 +212,39 @@ void main(void)
 	{
 		//struct Measurement m = readADCValue();
 		//printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
-		
-		k_sleep(K_MSEC(1000));
-		
-		dk_set_led_on(USER_LED1);
-		dk_set_led_on(USER_LED2);
-		dk_set_led_on(USER_LED3);
-		dk_set_led_on(USER_LED4);
-		 
-		k_sleep(K_MSEC(1000));
-		
-		dk_set_led_off(USER_LED1);
-		dk_set_led_off(USER_LED2);
-		dk_set_led_off(USER_LED3);
-		dk_set_led_off(USER_LED4);
-
+		if(state == 0)
+		{
+			k_sleep(K_MSEC(1000));
+			
+			dk_set_led_on(USER_LED1);
+			dk_set_led_on(USER_LED2);
+			dk_set_led_on(USER_LED3);
+			dk_set_led_on(USER_LED4);
+			
+			k_sleep(K_MSEC(1000));
+			
+			dk_set_led_off(USER_LED1);
+			dk_set_led_off(USER_LED2);
+			dk_set_led_off(USER_LED3);
+			dk_set_led_off(USER_LED4);
+		}
+		else
+		{
+			k_sleep(K_MSEC(100));
+			
+			dk_set_led_on(USER_LED1);
+			k_sleep(K_MSEC(100));
+			dk_set_led_off(USER_LED1);
+			dk_set_led_on(USER_LED2);
+			k_sleep(K_MSEC(100));
+			dk_set_led_off(USER_LED2);
+			dk_set_led_on(USER_LED3);
+			k_sleep(K_MSEC(100));
+			dk_set_led_off(USER_LED3);
+			dk_set_led_on(USER_LED4);
+			k_sleep(K_MSEC(100));
+			dk_set_led_off(USER_LED4);
+		}
 
 	}
 }

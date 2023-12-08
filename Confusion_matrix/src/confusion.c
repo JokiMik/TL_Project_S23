@@ -96,6 +96,11 @@ void makeClassificationWithNeuralNetwork(int direction)
 			a1[i] = a1[i] + a0[j] * W1[j][i];
 		}
 	}
+   //Lasketaan a1 + b1
+	for (int i = 0; i < w1Cols; ++i) 
+	{
+		a1[i] = a1[i] + B1[i];
+	}
    //Lasketeaan relu(a1)
 	relu(a1, w1Cols);
 
@@ -106,6 +111,11 @@ void makeClassificationWithNeuralNetwork(int direction)
 			a2[i] = a2[i] + a1[j] * W2[j][i];
 		}
 	}
+	for (int i = 0; i < w2Cols; ++i) 
+	{
+		a2[i] = a2[i] + B2[i];
+	}
+   //Lasketaan a2 + b2
 	for (int i = 0; i < w2Cols; ++i) 
 	{
 		a2[i] = a2[i] + B2[i];

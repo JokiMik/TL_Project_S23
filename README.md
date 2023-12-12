@@ -19,6 +19,20 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 
 *Kuva 1. Arkkitehtuurikuva projektista.*
 
+## Kiihtyvyysanturimittaukset ja datan siirto tietokantaan
+
+Mittaukset ja tallennus tietokantaan toteutettiin pitämällä anturia aina yhteen suuntaan kerrallaan ja samalla tälle suunnalle annettiin numero (label), joka toimii suuntatietona neuroverkolle.
+
+#### Suunta ja label:  
+
+x-akseli alas = 0  
+x-akseli ylös = 1  
+y-akseli alas = 2  
+y-akseli ylös = 3  
+z-akseli alas = 4  
+z-akseli ylös = 5
+
+
 ## K-means opetusalgoritmi
 K-means opetusalgoritmillä sensoridatasta saadaan tunnistettua ja luokiteltua kaikki kuusi eri suuntaa keskipisteiden avulla. Kuusi suuntaa ovat siis x,y ja z, joista jokainen sekä ylös että alas.  
 - Opetus (luokittelu) aloitetaan arvaamalla ensin kuusi satunnaista keskipistettä ja laskemalla kaikkien tunnettujen pisteiden etäisyys, jokaiseen arvottuun keksipisteeseen.  
@@ -39,7 +53,24 @@ K-means opetusalgoritmillä sensoridatasta saadaan tunnistettua ja luokiteltua k
 *Kuva 3. Sensoridata ja arvotut keskipisteet.*
 
 <picture>
- <img alt="Opetus" src="kmeans.gif">
+ <img alt="K-means opetus" src="kmeans.gif">
 </picture>
 
 *Kuva 4. K-means-algoritmin opetus.* 
+
+## Neuroverkon opetus
+
+<picture>
+ <img alt="Neuroverkon rakenne" src="neuroverkko.png">
+</picture>
+
+*Kuva 5. Neuroverkon rakenteen suunnitelma*
+
+Neuroverkolle annetaan x,y ja z arvot sekä suuntatieto (luokka), jonka mukaan neuroverkko luokittelee x,y ja z arvot kuuteen eri luokkaan.
+
+<picture>
+ <img alt="Keras malli" src="keras.png">
+</picture>
+
+*Kuva 5. Mallin rakennus Colabissa*
+

@@ -16,7 +16,7 @@
 #include <zephyr/devicetree.h>
 
 #include "confusion.h"
-
+//#include "neuroverkonKertoimet.h"
 
 
 
@@ -42,20 +42,33 @@ static int direction = -1;	// 0 = x direction high
 
 LOG_MODULE_REGISTER(MAIN, LOG_LEVEL_INF);
 
+int state = 0; // 0 = k-means, 1 = neural network
+
 static void button_changed(uint32_t button_state, uint32_t has_changed)
 {
 	//printk("button_state = %d\n",button_state);
 	//printk("has_changed = %d\n",has_changed);
 	if ((has_changed & USER_BUTTON_1) && (button_state & USER_BUTTON_1)) 
 	{
-		printk("Button 1 down, printing current Confusion Matrix\n");
-		printConfusionMatrix();
+		printk("Button 1 down, changing current state:\n");
+		if(state == 0)
+		{
+			state = 1;
+			printk("Classification is done with neural network\n");
+		}
+		else
+		{
+			state = 0;
+			printk("Classification is done with k-means\n");
+		}
+		//printk("Button 1 down, printing current Confusion Matrix\n");
+		//printConfusionMatrix();
 	}
 
 	if ((has_changed & USER_BUTTON_2) && (button_state & USER_BUTTON_2)) 
 	{
 		printk("Button 2 down, resetting confusion matrix\n");
-		resetConfusionMatrix();
+		resetConfusionMatrix(state);
 		printConfusionMatrix();
 	}		
 	
@@ -106,15 +119,75 @@ static void button_changed(uint32_t button_state, uint32_t has_changed)
 
 		for(int i = 0; i < 100; i++)
 		{
-			makeOneClassificationAndUpdateConfusionMatrix(direction);
+			if(state == 0)
+			{
+				makeOneClassificationAndUpdateConfusionMatrix(direction);
+			}
+			else
+			{
+				makeClassificationWithNeuralNetwork(direction);
+			}
 		}
 		printConfusionMatrix();
 	}		
 }
 
-
 void main(void)
 {
+	
+	
+	/*	
+	//Lasketaan softmax(a2) TOIMII
+    float max = -__FLT_MAX__; //alustus pienimmällä float luvulla (=suurin negatiivinen luku)
+    float sum = 0;
+
+    // Etsitään suurin arvo
+    for (int i = 0; i < w2Cols; i++) {
+        if (a2[i] > max) {
+            max = a2[i];
+        }
+    }
+
+    // Vähennetään suurin arvo ja lasketaan e:n potenssiin x jokaiselle x:n alkiolle
+    // Laske näiden summa
+    for (int i = 0; i < w2Cols; i++) {
+        a2[i] = exp(a2[i] - max);	//Vähennetään suurin arvo vektorista ennen e:n potenssiin laskemista (estää ylivuodon)
+        sum = sum + a2[i];
+    }
+
+    // Jaa jokainen alkio summan arvolla
+    for (int i = 0; i < w2Cols; i++) {
+        a2[i] = a2[i] / sum;
+    }
+	printk("\nTulos softmax laskun jälkeen:\n");
+	for (int i = 0; i < w2Cols; ++i) 
+	{
+		printk("%f ", a2[i]);
+	}
+	*/
+
+	/*//RELU TESTI TOIMII
+	int relu_array[] = {1, 2, 3, -1, -2, -3};
+    int size = sizeof(relu_array) / sizeof(relu_array[0]);
+	printk("Arrayn koko on %d",size);
+    printk("Alkuperäinen taulukko:\n");
+    for (int i = 0; i < size; ++i) {
+        printk("%d ", relu_array[i]);
+    }
+    printk("\n");
+
+    // Kutsutaan relu-funktiota
+    relu(relu_array, size);
+
+    printk("Muutettu taulukko:\n");
+    for (int i = 0; i < size; ++i) {
+        printk("%d ", relu_array[i]);
+    }
+    printk("\n");
+	*/
+
+
+
 	int err;
 	err = dk_leds_init();
 	if (err) {
@@ -139,21 +212,39 @@ void main(void)
 	{
 		//struct Measurement m = readADCValue();
 		//printk("x = %d,  y = %d,  z = %d\n",m.x,m.y,m.z);
-		
-		k_sleep(K_MSEC(1000));
-		
-		dk_set_led_on(USER_LED1);
-		dk_set_led_on(USER_LED2);
-		dk_set_led_on(USER_LED3);
-		dk_set_led_on(USER_LED4);
-		 
-		k_sleep(K_MSEC(1000));
-		
-		dk_set_led_off(USER_LED1);
-		dk_set_led_off(USER_LED2);
-		dk_set_led_off(USER_LED3);
-		dk_set_led_off(USER_LED4);
-
+		if(state == 0)
+		{
+			k_sleep(K_MSEC(1000));
+			
+			dk_set_led_on(USER_LED1);
+			dk_set_led_on(USER_LED2);
+			dk_set_led_on(USER_LED3);
+			dk_set_led_on(USER_LED4);
+			
+			k_sleep(K_MSEC(1000));
+			
+			dk_set_led_off(USER_LED1);
+			dk_set_led_off(USER_LED2);
+			dk_set_led_off(USER_LED3);
+			dk_set_led_off(USER_LED4);
+		}
+		else
+		{
+			k_sleep(K_MSEC(100));
+			
+			dk_set_led_on(USER_LED1);
+			k_sleep(K_MSEC(100));
+			dk_set_led_off(USER_LED1);
+			dk_set_led_on(USER_LED2);
+			k_sleep(K_MSEC(100));
+			dk_set_led_off(USER_LED2);
+			dk_set_led_on(USER_LED3);
+			k_sleep(K_MSEC(100));
+			dk_set_led_off(USER_LED3);
+			dk_set_led_on(USER_LED4);
+			k_sleep(K_MSEC(100));
+			dk_set_led_off(USER_LED4);
+		}
 
 	}
 }

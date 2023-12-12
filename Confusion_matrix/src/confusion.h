@@ -5,7 +5,11 @@ void printConfusionMatrix(void);
 void makeHundredFakeClassifications(void); 
 void makeOneClassificationAndUpdateConfusionMatrix(int);
 int calculateDistanceToAllCentrePointsAndSelectWinner(int,int,int);
-void resetConfusionMatrix(void);
+void resetConfusionMatrix(int);
 
+//funktiot neuroniverkkoa varten
+void relu(float*, int);
+void softmax(float*, int);
+void makeClassificationWithNeuralNetwork(int);
 
 #endif

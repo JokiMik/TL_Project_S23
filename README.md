@@ -21,7 +21,7 @@ Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP 
 
 ## Kiihtyvyysanturimittaukset ja datansiirto tietokantaan
 
-Mittaukset ja tallennus tietokantaan toteutettiin pitämällä anturia aina yhteen suuntaan kerrallaan ja samalla tälle suunnalle annettiin numero (label), joka toimii suuntatietona neuroverkolle.
+Mittaukset ja tallennus tietokantaan toteutettiin pitämällä anturia aina yhteen suuntaan kerrallaan ja samalla tälle suunnalle annettiin numero (label), joka toimii suuntatietona neuroverkolle. Annoimme vaihtelua sensoridatalle heiluttamalla anturia mittausta tehdessä.
 
 #### Suunta ja label:  
 
@@ -36,8 +36,8 @@ z-akseli ylös = 5
 ## K-means opetusalgoritmi
 K-means opetusalgoritmillä sensoridatasta saadaan tunnistettua ja luokiteltua kaikki kuusi eri suuntaa keskipisteiden avulla. 
 - Opetus (luokittelu) aloitetaan arvaamalla ensin kuusi satunnaista keskipistettä ja laskemalla kaikkien tunnettujen pisteiden etäisyys, jokaiseen arvottuun keksipisteeseen.  
-- Jokaiselle keskipisteelle on laskuri- ja kumulatiivinen summa -taulukko, johon tallennetaan voittajan eli lähinnä olevan pisteen koordinaatit. Laskuria kasvatetaan aina voittajan keksipisteen kohdalla.  
-- Tämän jälkeen lasketaan uudet keskipisteet kumulatiivisen summa- ja laskurin arvojen avulla (keskiarvo). Jos jokin keskipiste ei saanut yhtään voittoa, niin sille arvotaan uusi satunnainen keskipiste.  
+- Jokaiselle keskipisteelle on laskuri- ja kumulatiivinen summataulukko, johon tallennetaan voittajan eli lähinnä olevan pisteen koordinaatit. Laskuria kasvatetaan aina voittajan keksipisteen kohdalla.  
+- Tämän jälkeen lasketaan uudet keskipisteet kumulatiivisen summa- ja laskuriarvojen avulla (keskiarvo). Jos jokin keskipiste ei saanut yhtään voittoa, niin sille arvotaan uusi satunnainen keskipiste.  
 - Tätä toistetaan niin kauan että luokittelu onnistuu.
 - Lopputuloksena saatiin keskipisteet.h tiedosto, joka sisältää kaikki kuusi opetettua keskipistettä.  
 

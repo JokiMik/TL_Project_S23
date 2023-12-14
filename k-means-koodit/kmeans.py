@@ -34,7 +34,7 @@ distances = np.zeros((1,numberOfCP)) # etäisyydet keskipisteistä pisteisiin
 # Määritetään kuvaaja ennen opetusta
 fig = plt.figure()
 
-teachingRounds = 50
+teachingRounds = 20
 
 for kierros in range(teachingRounds): # Step 7. Opetusta toistetaan riittävän monta kertaa
     counts[:] = 0 # laskurin nollaus

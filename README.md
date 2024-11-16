@@ -1,7 +1,7 @@
-# Tietoliikenteen sovellusprojekti
-Projektissa tehtävänä on suunnitella Nordic NRF5340 DK -alustalle ohjelma, joka mittaa kiihtyvyysanturidataa ja välittää tietoa langattomasti IoT-reitittimen (Raspberry Pi) kautta Oamkin MySQL-palvelimelle.
+# Tietoliikenteen sovellusprojekti Syksy 2023
+Projektissa tehtävänä oli suunnitella Nordic NRF5340 DK -alustalle ohjelma, joka mittasi kiihtyvyysanturidataa ja välitti tietoa langattomasti IoT-reitittimen (Raspberry Pi) kautta Oamkin MySQL-palvelimelle.
 
-Tietokantaan tallentuvaan dataan on TCP-sokettirajapinta ja yksinkertainen HTTP API, jonka kautta dataa haetaan omaan kannettavaan koodatulla Python-ohjelmalla ja käsitellään koneoppimistarkoituksiin.  
+Tietokantaan tallentuvaan dataan oli TCP-sokettirajapinta ja yksinkertainen HTTP API, jonka kautta dataa haetttiin omaan kannettavaan koodatulla Python-ohjelmalla ja käsiteltiin koneoppimistarkoituksiin.  
 Arkkitehtuurikuva antaa yleiskuvan projektin eri osien välisistä yhteyksistä ja toiminnallisuuksista (kuva 1).
 <br/>
 
@@ -31,7 +31,7 @@ z-akseli ylös = 5
 *Kuva 2. Sensoridata 3D-avaruudessa.*
 
 ## K-means opetusalgoritmi
-K-means opetusalgoritmillä tietokannasta haetusta sensoridatasta saadaan tunnistettua ja luokiteltua kaikki kuusi eri suuntaa keskipisteiden avulla. 
+K-means opetusalgoritmillä tietokannasta haetusta sensoridatasta saatiin tunnistettua ja luokiteltua kaikki kuusi eri suuntaa keskipisteiden avulla. 
 - Opetus (luokittelu) aloitetaan arvaamalla ensin kuusi satunnaista keskipistettä ja laskemalla kaikkien tunnettujen pisteiden etäisyys, jokaiseen arvottuun keksipisteeseen (kuva 3).  
 - Jokaiselle keskipisteelle on laskuri- ja kumulatiivinen summataulukko, johon tallennetaan voittajan eli lähinnä olevan pisteen koordinaatit. Laskuria kasvatetaan aina voittajan keksipisteen kohdalla.  
 - Tämän jälkeen lasketaan uudet keskipisteet kumulatiivisen summa- ja laskuriarvojen avulla (keskiarvo). Jos jokin keskipiste ei saanut yhtään voittoa, niin sille arvotaan uusi satunnainen keskipiste.  
